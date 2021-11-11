@@ -44,9 +44,20 @@ class ClientController extends Controller
 
         $client->save();
 
-        // return redirect()->route("client.index");
+        $success = [
+            'message' => '[Back-End]Client added successfully',
+            'clientID' => $client->id,
+            'clientName' => $client->name,
+            'clientSurname' => $client->surname,
+            'clientDescription' => $client->description
+        ];
 
-        return "Client added successfully";
+        //JSON masyvas
+        $success_json = response()->json($success);
+
+        return $success_json;
+
+        // return "Clients added successfully";
 
     }
 
@@ -92,6 +103,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+        return "Deleted";
     }
 }

@@ -24,5 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix("clients")->group(function() {
     Route::get('', 'ClientController@index')->name('client.index');
     Route::get('create', 'ClientController@create')->name('client.create');
+
     Route::post('store', 'ClientController@store')->name('client.store');
+    Route::post('destroy/{client}', 'ClientController@destroy')->name('client.destroy');
 });

@@ -41,12 +41,18 @@
             var clientSurname = $("#clientSurname").val();
             var clientDescription = $("#clientDescription").val();
 
+            //javascript masyvas - json
+            //jisai suprasti tik json formata
+
             $.ajax({
                 type: 'POST',
                 url: '{{route("client.store")}}',
                 data: {clientName: clientName, clientSurname: clientSurname, clientDescription: clientDescription  },
                 success: function(data) {
-                    alert("Client added successfully")
+                    alert(data.message);
+                    // data = $success_json
+                    console.log(data);
+                    //teksta patiems, gauti informacija is backendo
                 }
             });
             // console.log(clientName + " " + clientSurname + " " + clientDescription);
