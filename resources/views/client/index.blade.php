@@ -44,11 +44,6 @@
                 <td> {{$client->surname}} </td>
                 <td> {!! $client->description !!} </td>
                 <td>
-                    <form method="POST" action={{route("client.destroy", [$client])}}>
-                        @csrf
-                        <button class="btn btn-danger">DELETE </button>
-                    </form>
-
                     <button class="btn btn-success delete" data-clientid="{{$client->id}}" >DELETE AJAX </button>
                 </td>
             </tr>
@@ -67,8 +62,10 @@
         }
     });
 
-    $(".delete").click(function() {
 
+
+    $(document).on('click', '.delete', function(event) {
+    // $(".delete").click(function() {
         $(this).parents('.client').remove();
 
         console.log($(this).attr("data-clientid"));
@@ -101,7 +98,7 @@
                 if($.isEmptyObject(data.error)) {
 
                     $(".invalid-feedback").css('display','none');
-                    $("#clients").append("<tr><td>"+data.clientID+"</td><td>"+data.clientName+"</td><td>"+data.clientSurname+"</td><td>"+data.clientDescription+"</td><td>Actions</td></tr>")
+                    $("#clients").append("<tr class='client'><td>"+data.clientID+"</td><td>"+data.clientName+"</td><td>"+data.clientSurname+"</td><td>"+data.clientDescription+"</td><td><button class='btn btn-success delete' data-clientid='"+data.clientID+"' >DELETE AJAX </button></td></tr>")
                     // alert(data.message);
                 } else {
                     $(".invalid-feedback").css('display','none');
