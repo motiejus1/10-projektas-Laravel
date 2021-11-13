@@ -37,26 +37,50 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $client = new Client;
 
-        $client->name = $request->clientName;
-        $client->surname = $request->clientSurname;
-        $client->description = $request->clientDescription;
 
-        $client->save();
-
-        $success = [
-            'message' => '[Back-End] Client added successfully',
-            'clientID' => $client->id,
-            'clientName' => $client->name,
-            'clientSurname' => $client->surname,
-            'clientDescription' => $client->description
+        $input = [
+            'clientName' => $request->clientName,
+            'clientSurname' => $request->clientSurname,
+            'clientDescription' => $request->clientDescription
         ];
 
-        //JSON masyvas
-        $success_json = response()->json($success);
+        $rules = [
+            'clientName' => 'required|min:3',
+            'clientSurname' => 'required|min:3',
+            'clientDescription' => 'min:8'
+        ];
 
-        return $success_json;
+        $validator = Validator::make($input, $rules);
+
+        if($validator->passes()) {
+            $client = new Client;
+            $client->name = $request->clientName;
+            $client->surname = $request->clientSurname;
+            $client->description = $request->clientDescription;
+            $client->save();
+
+            $success = [
+                'message' => '[Back-End] Client added successfully',
+                'clientID' => $client->id,
+                'clientName' => $client->name,
+                'clientSurname' => $client->surname,
+                'clientDescription' => $client->description
+            ];
+
+            $success_json = response()->json($success);
+
+            return $success_json;
+
+        }
+
+        $error = [
+            'error' => $validator->messages()->get("*")
+        ];
+
+        $error_json = response()->json($error);
+
+        return $error_json;
 
         // return "Clients added successfully";
 
