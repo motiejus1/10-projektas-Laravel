@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use Illuminate\Http\Request;
+use Validator;
 
 class ClientController extends Controller
 {
@@ -45,7 +46,7 @@ class ClientController extends Controller
         $client->save();
 
         $success = [
-            'message' => '[Back-End]Client added successfully',
+            'message' => '[Back-End] Client added successfully',
             'clientID' => $client->id,
             'clientName' => $client->name,
             'clientSurname' => $client->surname,
@@ -105,5 +106,62 @@ class ClientController extends Controller
     {
         $client->delete();
         return "Deleted";
+    }
+
+    public function validationcreate() {
+        return view("client.validationcreate");
+    }
+
+    public function validationstore(Request $request) {
+
+        // $client = new Client;
+
+        // $request->validate([
+        //     'name' => 'required'
+        // ]);
+        $input = [
+            'name' => $request->name,
+            'surname' => $request->surname
+        ];
+
+        $rules = [
+            'name' => 'required|alpha',//privalomas, leidzia irasyti tik raides
+            'surname' => 'numeric|max:65'
+        ];
+
+        $messages = [
+            'required' => "The name field is required",
+            'alpha' => "Only letters"
+        ];
+
+        $validator = Validator::make($input, $rules, $messages );
+
+        if($validator->passes()) {
+            $success = [
+                'success' => "The name validated successfully"
+            ];
+            $success_json = response()->json($success);
+            //sekmes atveju pasibaigia ties cia
+            return $success_json ;
+        }
+
+        //nesekmes zinute/masyva
+
+        $error = [
+            // 'error' => 'The error has occured'
+            'error' => $validator->errors()->all()
+        ];
+
+        $error_json = response()->json($error);
+
+        return $error_json;
+
+        // $client->name = $request->name;
+
+        // $client->save();
+
+
+
+
     }
 }

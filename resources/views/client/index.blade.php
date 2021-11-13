@@ -85,8 +85,6 @@
         //javascript masyvas - json
         //jisai suprasti tik json formata
 
-
-
         $.ajax({
             type: 'POST',
             url: '{{route("client.store")}}',

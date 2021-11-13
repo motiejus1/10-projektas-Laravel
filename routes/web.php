@@ -27,4 +27,8 @@ Route::prefix("clients")->group(function() {
 
     Route::post('store', 'ClientController@store')->name('client.store');
     Route::post('destroy/{client}', 'ClientController@destroy')->name('client.destroy');
+
+    Route::get('validationcreate', 'ClientController@validationcreate')->name('client.validationcreate');
+    Route::post('validationstore', 'ClientController@validationstore')->name('client.validationstore');
+
 });
