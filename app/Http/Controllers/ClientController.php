@@ -136,6 +136,12 @@ class ClientController extends Controller
 
         $validator = Validator::make($input, $rules, $messages );
 
+        // patikrinti ar elementas egizistuoja ir ar netuscias
+        //if($name && $surname) ir name ir surname yra netuscias
+
+        // $validator->passes() kaip ifa, tik jame tikriname daugiau taisykliu
+
+
         if($validator->passes()) {
             $success = [
                 'success' => "The name validated successfully"
@@ -149,7 +155,8 @@ class ClientController extends Controller
 
         $error = [
             // 'error' => 'The error has occured'
-            'error' => $validator->errors()->all()
+            // 'error' => $validator->errors()->all() // grazina visas klaidas numeruojame masyve
+            'error' => $validator->messages()->get("*")
         ];
 
         $error_json = response()->json($error);
